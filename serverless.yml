@@ -1,0 +1,22 @@
+service: mfs-application
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage, 'dev'} # Set the default stage used. Default is dev
+  region: ap-southeast-1
+  memorySize: 128
+  timeout: 30 # optional, in seconds, default is 6
+  environment:
+    NODE_ENV: ${opt:stage}
+functions:
+  api:
+    handler: app/lambda.handler
+    events: 
+      - http: 
+          path: /
+          method: ANY
+          cors: true
+      - http: 
+          path: /{proxy+}
+          method: ANY
+          cors: true

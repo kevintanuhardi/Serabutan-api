@@ -1,0 +1,9 @@
+node_modules/
+version.json
+version-staging.json
+version-dev.json
+package-lock.json
+config.json
+trial/
+.serverless/
+.DS_Store
