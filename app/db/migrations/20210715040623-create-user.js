@@ -11,10 +11,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       phone_number: {
         type: Sequelize.STRING,
         allowNull: false,

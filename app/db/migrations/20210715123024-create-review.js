@@ -1,17 +1,32 @@
+const {
+  reviewRoleEnum,
+} = require('../../helpers/enum');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('city', {
+    await queryInterface.createTable('review', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-      },
-      provinceId: {
+      job_id: {
         type: Sequelize.INTEGER,
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+      },
+      rate: {
+        type: Sequelize.INTEGER,
+      },
+      role: {
+        type: Sequelize.ENUM,
+        values: reviewRoleEnum,
+      },
+      desc: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -24,6 +39,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('city');
+    await queryInterface.dropTable('review');
   },
 };

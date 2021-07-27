@@ -7,15 +7,6 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      set(value) {
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(value, salt);
-        this.setDataValue('password', hash);
-      },
-    },
     phoneNumber: {
       type: DataTypes.STRING,
       field: 'phone_number',
@@ -37,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: {
           args: [genderEnum],
-          msg: `Jenis Kelamin harus di antara ${genderEnum.join(
+          msg: `Gender must be between ${genderEnum.join(
             ', ',
           )}`,
         },

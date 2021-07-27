@@ -2,6 +2,7 @@
 
 const {
   jobStatusEnum,
+  jobUrgencyEnum,
 } = require('../../helpers/enum');
 
 module.exports = (sequelize, DataTypes) => {
@@ -10,13 +11,27 @@ module.exports = (sequelize, DataTypes) => {
       field: 'job_poster_id',
       type: DataTypes.INTEGER,
     },
-    categoryId: {
-      field: 'category_id',
-      type: DataTypes.INTEGER,
+    latitude: {
+      type: DataTypes.DECIMAL,
     },
-    locationId: {
-      field: 'location_id',
-      type: DataTypes.INTEGER,
+    longitude: {
+      type: DataTypes.DECIMAL,
+    },
+    urgency: {
+      type: DataTypes.ENUM,
+      allowNull: false,
+      values: jobUrgencyEnum,
+      validate: {
+        isIn: {
+          args: [jobUrgencyEnum],
+          msg: `Urgency must be betweeen ${jobUrgencyEnum.join(
+            ', ',
+          )}`,
+        },
+      },
+    },
+    title: {
+      type: DataTypes.STRING,
     },
     status: {
       type: DataTypes.ENUM,
@@ -25,31 +40,19 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: {
           args: [jobStatusEnum],
-          msg: `Jenis Kelamin harus di antara ${jobStatusEnum.join(
+          msg: `Status must be betweeen ${jobStatusEnum.join(
             ', ',
           )}`,
         },
       },
     },
-    jobDesc: {
+    desc: {
       type: DataTypes.STRING,
-      field: 'job_desc',
+      field: 'desc',
     },
-    startDate: {
-      type: DataTypes.DATE,
-      field: 'start_date',
-    },
-    endDate: {
-      type: DataTypes.DATE,
-      field: 'end_date',
-    },
-    minPrice: {
+    price: {
       type: DataTypes.INTEGER,
-      field: 'min_price',
-    },
-    maxPrice: {
-      type: DataTypes.INTEGER,
-      field: 'max_price',
+      field: 'price',
     },
   }, {
     timestamps: true,

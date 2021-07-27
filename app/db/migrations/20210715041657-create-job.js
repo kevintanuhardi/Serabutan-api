@@ -1,5 +1,6 @@
 const {
   jobStatusEnum,
+  jobUrgencyEnum,
 } = require('../../helpers/enum');
 
 module.exports = {
@@ -14,30 +15,23 @@ module.exports = {
       job_poster_id: {
         type: Sequelize.INTEGER,
       },
-      category_id: {
-        type: Sequelize.INTEGER,
+      title: {
+        type: Sequelize.STRING,
       },
-      location_id: {
-        type: Sequelize.INTEGER,
+      urgency: {
+        type: Sequelize.ENUM,
+        allowNull: false,
+        values: jobUrgencyEnum,
       },
       status: {
         type: Sequelize.ENUM,
         allowNull: false,
         values: jobStatusEnum,
       },
-      job_desc: {
+      desc: {
         type: Sequelize.STRING,
       },
-      start_date: {
-        type: Sequelize.DATE,
-      },
-      end_date: {
-        type: Sequelize.DATE,
-      },
-      min_price: {
-        type: Sequelize.INTEGER,
-      },
-      max_price: {
+      price: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
