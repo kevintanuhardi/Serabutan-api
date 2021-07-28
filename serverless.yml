@@ -1,4 +1,4 @@
-service: mfs-application
+service: serabutan-api
 provider:
   name: aws
   runtime: nodejs10.x
