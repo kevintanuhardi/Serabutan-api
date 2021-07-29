@@ -1,38 +1,37 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('employee', {
+    await queryInterface.createTable('job-image', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      jobId: {
         type: Sequelize.INTEGER,
+        field: 'job_id',
+        allowNull: false,
       },
-      skill: {
+      imageUrl: {
         type: Sequelize.STRING,
+        field: 'image_url',
+        allowNull: false,
       },
-      short_desc: {
-        type: Sequelize.STRING,
+      sequence: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
-      is_verified: {
-        type: Sequelize.BOOLEAN,
-      },
-      is_active: {
-        type: Sequelize.BOOLEAN,
-      },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
     });
   },
-  down: async (queryInterface) => {
-    await queryInterface.dropTable('employee');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('job-image');
   },
 };

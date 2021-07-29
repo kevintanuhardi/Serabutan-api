@@ -21,14 +21,6 @@ module.exports = {
         type: Sequelize.ENUM,
         allowNull: false,
         values: jobApplicationStatusEnum,
-        validate: {
-          isIn: {
-            args: [jobApplicationStatusEnum],
-            msg: `Jenis Kelamin harus di antara ${jobApplicationStatusEnum.join(
-              ', ',
-            )}`,
-          },
-        },
       },
       cover_letter: {
         type: Sequelize.STRING,
@@ -36,11 +28,11 @@ module.exports = {
       asking_price: {
         type: Sequelize.INTEGER,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },

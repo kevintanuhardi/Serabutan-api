@@ -1,6 +1,8 @@
 const {
   jobStatusEnum,
   jobUrgencyEnum,
+  genderEnum,
+  ageRangeEnum,
 } = require('../../helpers/enum');
 
 module.exports = {
@@ -28,17 +30,27 @@ module.exports = {
         allowNull: false,
         values: jobStatusEnum,
       },
+      genderPreference: {
+        type: Sequelize.ENUM,
+        allowNull: false,
+        values: genderEnum,
+      },
+      agePreference: {
+        type: Sequelize.ENUM,
+        allowNull: false,
+        values: ageRangeEnum,
+      },
       desc: {
         type: Sequelize.STRING,
       },
       price: {
         type: Sequelize.INTEGER,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },

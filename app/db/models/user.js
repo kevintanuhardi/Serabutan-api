@@ -38,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       field: 'bio_desc',
     },
-    profileImageId: {
-      type: DataTypes.NUMBER,
-      field: 'profile_image_int',
+    profileImage: {
+      type: DataTypes.STRING,
+      field: 'profile_image',
     },
     isActive: {
       type: DataTypes.BOOLEAN,
@@ -55,10 +55,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'users',
+    tableName: 'user',
   });
   User.associate = (models) => {
-    User.hasOne(models.Employee, { foreignKey: 'userId', sourceKey: 'id', as: 'employee' });
   };
   return User;
 };

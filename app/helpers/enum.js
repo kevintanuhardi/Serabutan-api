@@ -16,7 +16,7 @@ exports.jobUrgencyEnum = [
   'LOW',
   'MEDIUM',
   'HIGH',
-]
+];
 
 exports.jobApplicationStatusEnum = [
   'APPLIED',
@@ -28,3 +28,14 @@ exports.reviewRoleEnum = [
   'EMPLOYER',
   'EMPLOYEE',
 ];
+
+exports.otpTypeEnum = [
+  'SIGNUP',
+  'LOGIN',
+];
+
+exports.ageRangeEnum = [
+  '16-25',
+  '26-40',
+  '>40',
+]

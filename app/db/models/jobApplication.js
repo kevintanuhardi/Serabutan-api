@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: {
           args: [jobApplicationStatusEnum],
-          msg: `Jenis Kelamin harus di antara ${jobApplicationStatusEnum.join(
+          msg: `Job application status must be between ${jobApplicationStatusEnum.join(
             ', ',
           )}`,
         },

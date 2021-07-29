@@ -31,8 +31,8 @@ module.exports = {
         type: Sequelize.STRING,
         field: 'bio_desc',
       },
-      profile_image_int: {
-        type: Sequelize.NUMBER,
+      profile_image: {
+        type: Sequelize.STRING,
       },
       is_active: {
         type: Sequelize.BOOLEAN,

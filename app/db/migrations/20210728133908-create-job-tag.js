@@ -1,32 +1,31 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('employer', {
+    await queryInterface.createTable('job_tag', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      job_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
-      is_verified: {
-        type: Sequelize.BOOLEAN,
+      tag_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
-      is_active: {
-        type: Sequelize.BOOLEAN,
-      },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
     });
   },
-  down: async (queryInterface) => {
-    await queryInterface.dropTable('employer');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('job_tag');
   },
 };
