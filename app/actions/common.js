@@ -50,7 +50,7 @@ module.exports = (modelName) => ({
     if (instance) {
       return instance.update(newData);
     }
-    return models[modelName].create(newData);
+    return models[modelName].create({ ...newData, ...uniqueFields });
   },
   delete: async (where) => models[modelName].destroy({ where }),
   count: async (where = {}, include = null, group = null) => {

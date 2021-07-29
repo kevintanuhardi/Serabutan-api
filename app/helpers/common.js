@@ -37,11 +37,14 @@ exports.errorResponse = (res, httpCodeStatus, err) => {
 };
 
 exports.successResponse = (res, status, obj, extra) => {
-  const resultPrint = {};
+  let resultPrint = {};
   resultPrint.status = status || 200;
 
   if (isObject(obj)) {
-    resultPrint.data = obj;
+    resultPrint = {
+      ...resultPrint,
+      ...obj,
+    };
   } else {
     resultPrint.message = obj;
   }
