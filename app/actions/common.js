@@ -17,13 +17,16 @@ module.exports = (modelName) => ({
 
     return models[modelName].create(newData);
   },
-  list: async (where, paging = {}, association, arrOrder, group) => {
-    const { limit = 20, offset = 0 } = paging;
+  list: async ({
+    where = {}, paging = {}, association, arrOrder, group, plain = false,
+  }) => {
+    const { limit, offset = 0 } = paging;
 
     const parsedLimit = limit ? Number(limit) : null;
 
     const include = association || null;
-    return models[modelName].findAll({
+
+    const queryResult = await models[modelName].findAll({
       where,
       include,
       limit: parsedLimit,
@@ -31,6 +34,10 @@ module.exports = (modelName) => ({
       group,
       order: arrOrder,
     });
+    if (plain === false) {
+      return queryResult;
+    }
+    return queryResult.map((el) => el.get({ plain: true }));
   },
   findOne: async (where, association) => models[modelName].findOne({
     where,
@@ -46,7 +53,7 @@ module.exports = (modelName) => ({
     return models[modelName].create(newData);
   },
   delete: async (where) => models[modelName].destroy({ where }),
-  count: async (where, include = null, group = null) => {
+  count: async (where = {}, include = null, group = null) => {
     const data = await models[modelName].findAndCountAll({
       where,
       include,
