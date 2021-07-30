@@ -19,12 +19,14 @@ const getDataFromToken = async (bearerToken) => jwt.verify(
     if (decoded && decoded.exp >= new Date().valueOf() / 1000) {
       return {
         active: true,
-        custId: decoded.phoneNumber,
+        phoneNumber: decoded.phoneNumber,
+        userId: decoded.userId,
       };
     }
-    return {
-      active: false,
-    };
+    throw ({
+      message: 'Token unauthorized',
+      status: 401,
+    });
   },
 );
 

@@ -12,24 +12,22 @@ exports.constant = require('./constant');
 exports.errorResponse = (res, httpCodeStatus, err) => {
   const resultPrint = {};
   resultPrint.status = result(err, 'status') || result(err, 'statusCode') || 500;
-  resultPrint.errors = {};
 
-  if (isNil(httpCodeStatus) && isObject(err)) {
-    resultPrint.errors.message = result(err, 'message') || result(err, 'msg') || 'Bad Request';
+  if (isObject(err)) {
+    resultPrint.message = result(err, 'message') || result(err, 'msg') || 'Internal server error';
 
-    const isStatusCodeDuplicate = result(err, 'status') || result(err, 'statusCode');
-    const isMessageDuplicate = result(err, 'message') || result(err, 'msg');
-    resultPrint.errors.stackTrace = err;
-    if (isStatusCodeDuplicate) {
-      delete resultPrint.errors.stackTrace.statusCode;
-    }
-    if (isMessageDuplicate) {
-      delete resultPrint.errors.stackTrace.message;
-    }
+    resultPrint.stackTrace = err;
+    if (
+      resultPrint.stackTrace.message !== undefined
+    ) delete resultPrint.stackTrace.message;
+    if (
+      resultPrint.stackTrace.status !== undefined
+    ) delete resultPrint.stackTrace.status;
+    if (Object.keys(resultPrint.stackTrace).length === 0) delete resultPrint.stackTrace;
   } else {
-    const message = 'The server encountered an unexpected condition which prevented it from fulfilling the request.';
+    const message = 'Internal server error';
     resultPrint.status = httpCodeStatus || resultPrint.status;
-    resultPrint.errors.message = err || message;
+    resultPrint.message = err || message;
   }
 
   if (res === undefined) return resultPrint;

@@ -1,11 +1,11 @@
+/* global Helpers */
 const cors = require('cors');
 const express = require('express');
 const enrouten = require('express-enrouten');
 const cuid = require('cuid');
-// const multer = require('multer');
 const fileUpload = require('express-fileupload');
 
-// const upload = multer();
+const middleware = require('./middlewares');
 
 global.Helpers = require('./helpers/common');
 
@@ -29,6 +29,9 @@ app.use(fileUpload());
 // Logger
 app.set('etag', false);
 
+// Authentication Middleware
+app.use('/', middleware.auth.validateToken);
+
 // Routing
 app.use('/', enrouten({ directory: 'routes' }));
 
@@ -41,8 +44,6 @@ app.use('*', (req, res) => {
 });
 
 // Error handler
-app.use((err, req, res, next) => {
-  res.status(500).json(err);
-});
+app.use((err, req, res, next) => Helpers.errorResponse(res, null, err));
 
 module.exports = app;

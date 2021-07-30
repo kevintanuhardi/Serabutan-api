@@ -13,4 +13,14 @@ module.exports = {
     duplicateEmail: 'Email ini sudah terdaftar',
     badRequest: 'Bad Request',
   },
+  privateRoute: {
+    GET: [
+      '/job/nearby',
+    ],
+    POST: [
+      '/job',
+    ],
+    PUT: [],
+    DELETE: [],
+  },
 };
