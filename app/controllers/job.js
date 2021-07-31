@@ -1,7 +1,7 @@
 /* global Helpers */
 
 const jobCommonAction = require('../actions/common')('Job');
-const { getNearbyJob } = require('../actions/job');
+const { getNearbyJob, search } = require('../actions/job');
 
 module.exports = {
   createJob: async (req, res) => {
@@ -52,6 +52,36 @@ module.exports = {
       const nearbyJobs = await getNearbyJob({ lat: Number(lat), lng: Number(lng), radius });
 
       return Helpers.successResponse(res, 200, { records: nearbyJobs });
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
+  list: async (req, res) => {
+    try {
+      const {
+        title,
+        sort,
+        dist,
+        lat,
+        lng,
+      } = req.query;
+
+      const where = {
+        title,
+        dist,
+        gtePrice: req.query['price.gte'],
+        ltePrice: req.query['price.lte'],
+      };
+
+      Helpers.clearObjectEmptyField(where);
+
+      const arrOrder = Helpers.parsedSortQueryToSortArr(sort);
+
+      const records = await search({
+        where, arrOrder, lat: Number(lat), lng: Number(lng),
+      });
+
+      return Helpers.successResponse(res, 200, { records });
     } catch (err) {
       return Helpers.errorResponse(res, null, err);
     }

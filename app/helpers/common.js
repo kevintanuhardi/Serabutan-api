@@ -83,6 +83,26 @@ exports.parseQueryFilter = (filters = []) => {
   return where;
 };
 
+exports.parsedSortQueryToSortArr = (sortString = '') => {
+  if (sortString === '') return [];
+  const splittedSort = sortString.split(',');
+
+  return splittedSort.map((sort) => {
+    const order = sort.charAt(0) === '-' ? 'DESC' : 'ASC';
+    return [sort.substring(1), order];
+  });
+};
+
+exports.clearObjectEmptyField = (obj) => {
+  for (const propName in obj) {
+    if (obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName];
+    }
+  }
+};
+
+exports.clearArray = (arr) => arr.filter((el) => el !== null && el !== undefined);
+
 exports.parseSortBy = (sortBy) => {
   if (!sortBy) return [];
   const parsedSortBy = [];
@@ -96,13 +116,3 @@ exports.parseSortBy = (sortBy) => {
   });
   return parsedSortBy;
 };
-
-exports.clearObjectEmptyField = (obj) => {
-  for (const propName in obj) {
-    if (obj[propName] === null || obj[propName] === undefined) {
-      delete obj[propName];
-    }
-  }
-};
-
-exports.clearArray = (arr) => arr.filter((el) => el !== null && el !== undefined);
