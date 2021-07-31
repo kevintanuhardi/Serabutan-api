@@ -47,10 +47,16 @@ module.exports = {
         });
 
       if (otpType === 'SIGNUP' && user) {
-        throw new Error('Phone number is already registered');
+        throw ({
+          message: 'Phone number is already registered',
+          status: 401,
+        });
       }
       if (otpType === 'LOGIN' && !user) {
-        throw new Error('Phone number is not registered');
+        throw ({
+          message: 'Phone number is not registered',
+          status: 401,
+        });
       }
 
       const isOtp = await otpAction.verifyOtp({
@@ -61,7 +67,10 @@ module.exports = {
       });
 
       if (!isOtp) {
-        throw new Error('OTP is wrong');
+        throw ({
+          message: 'OTP is wrong',
+          status: 401,
+        });
       }
 
       // generate token
@@ -93,7 +102,10 @@ module.exports = {
         });
 
       if (user) {
-        throw new Error('Phone number is already registered');
+        throw ({
+          message: 'Phone number is already registered',
+          status: 401,
+        });
       }
 
       const createdUser = await userCommonAction.create({
@@ -101,7 +113,7 @@ module.exports = {
         dateOfBirth,
         gender,
         bioDesc,
-        phoneNumber,
+        phoneNumber: addCountryCodeToPhone('+62', phoneNumber),
       });
 
       const accessToken = await jwtService.generateAccessToken({

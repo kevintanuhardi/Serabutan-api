@@ -11,13 +11,12 @@ module.exports = (sequelize, DataTypes) => {
   const Job = sequelize.define('Job', {
     jobPosterId: {
       field: 'job_poster_id',
+      allowNull: false,
       type: DataTypes.INTEGER,
     },
-    latitude: {
-      type: DataTypes.DECIMAL,
-    },
-    longitude: {
-      type: DataTypes.DECIMAL,
+    coordinate: {
+      type: DataTypes.GEOMETRY,
+      allowNull: false,
     },
     urgency: {
       type: DataTypes.ENUM,
@@ -50,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     genderPreference: {
       type: DataTypes.ENUM,
-      allowNull: false,
       values: genderEnum,
       validate: {
         isIn: {

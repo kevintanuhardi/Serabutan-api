@@ -14,6 +14,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      coordinate: {
+        type: Sequelize.GEOMETRY,
+      },
       job_poster_id: {
         type: Sequelize.INTEGER,
       },
@@ -30,14 +33,12 @@ module.exports = {
         allowNull: false,
         values: jobStatusEnum,
       },
-      genderPreference: {
+      gender_preference: {
         type: Sequelize.ENUM,
-        allowNull: false,
         values: genderEnum,
       },
-      agePreference: {
+      age_preference: {
         type: Sequelize.ENUM,
-        allowNull: false,
         values: ageRangeEnum,
       },
       desc: {
