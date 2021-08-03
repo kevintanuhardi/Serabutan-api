@@ -86,6 +86,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'job',
   });
   Job.associate = (models) => {
+    Job.hasOne(models.JobApplication, { sourceKey: 'id', foreignKey: 'jobId', as: 'jobApplication' });
   };
   return Job;
 };

@@ -27,20 +27,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    coverLetter: {
-      type: DataTypes.STRING,
-      field: 'cover_letter',
-    },
-    askingPrice: {
-      type: DataTypes.INTEGER,
-      field: 'asking_price',
-    },
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'job_application',
+    tableName: 'job_applications',
   });
   JobApplication.associate = (models) => {
+    JobApplication.belongsTo(models.User, { sourceKey: 'employeeId', foreignKey: 'id', as: 'employee' });
   };
   return JobApplication;
 };

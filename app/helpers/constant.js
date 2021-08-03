@@ -16,11 +16,15 @@ module.exports = {
   privateRoute: {
     GET: [
       '/job/nearby',
+      '/job/contact-applicant',
+      '/user/profile',
     ],
     POST: [
       '/job',
     ],
-    PUT: [],
+    PUT: [
+      '/user/profile',
+    ],
     DELETE: [],
   },
 };

@@ -22,12 +22,6 @@ module.exports = {
         allowNull: false,
         values: jobApplicationStatusEnum,
       },
-      cover_letter: {
-        type: Sequelize.STRING,
-      },
-      asking_price: {
-        type: Sequelize.INTEGER,
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
