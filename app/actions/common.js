@@ -1,3 +1,4 @@
+/* global Helpers */
 const models = require('../db/models');
 
 module.exports = (modelName) => ({
@@ -39,11 +40,14 @@ module.exports = (modelName) => ({
     }
     return queryResult.map((el) => el.get({ plain: true }));
   },
-  findOne: async (where, association) => models[modelName].findOne({
+  findOne: async (where, include) => models[modelName].findOne({
     where,
-    association,
+    include,
   }),
-  update: async (where, field) => models[modelName].update(field, { where }),
+  update: async (where, field) => {
+    Helpers.clearObjectEmptyField(field);
+    return models[modelName].update(field, { where });
+  },
   upsert: async (newData, uniqueFields) => {
     const instance = await models[modelName].findOne({ where: uniqueFields });
 

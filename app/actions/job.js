@@ -2,6 +2,7 @@
 const { QueryTypes } = require('sequelize');
 
 const { sequelize } = require('../db/models');
+const { dbJobToModelJob } = require('../DTO');
 
 const R = 6371e3; // earth's mean radius in metres
 const { cos } = Math;
@@ -14,7 +15,8 @@ module.exports = {
     st_distance_sphere(ST_GeomFromText('POINT(:lng :lat)'), coordinate) as distance
     From job
     Where st_y(coordinate) Between :minLat And :maxLat
-      And st_x(coordinate) Between :minLon And :maxLon`;
+      And st_x(coordinate) Between :minLon And :maxLon
+      And status = 'ACTIVE'`;
     const replacements = {
       minLat: Number(lat) - radius / R * 180 / π,
       maxLat: Number(lat) + radius / R * 180 / π,
@@ -23,7 +25,9 @@ module.exports = {
       lat,
       lng,
     };
-    return sequelize.query(sql, { replacements, type: QueryTypes.SELECT });
+    const queryResult = await sequelize.query(sql, { replacements, type: QueryTypes.SELECT });
+
+    return queryResult.map((el) => dbJobToModelJob(el));
   },
   search: async ({
     where = {}, arrOrder, lat, lng, radius = 1000,
@@ -59,6 +63,7 @@ module.exports = {
     From job j
     Where st_y(coordinate) Between :minLat And :maxLat
       And st_x(coordinate) Between :minLon And :maxLon
+      And status = 'ACTIVE'
     ${additionalWhere}
     ${arrOrder.length > 0 ? orderString : ''}
     `;
@@ -70,6 +75,8 @@ module.exports = {
       lat,
       lng,
     };
-    return sequelize.query(sql, { replacements, type: QueryTypes.SELECT });
+    const queryResult = await sequelize.query(sql, { replacements, type: QueryTypes.SELECT });
+
+    return queryResult.map((el) => dbJobToModelJob(el));
   },
 };
