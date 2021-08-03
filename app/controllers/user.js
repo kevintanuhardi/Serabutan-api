@@ -125,4 +125,46 @@ module.exports = {
       return Helpers.errorResponse(res, null, err);
     }
   },
+  getProfile: async (req, res) => {
+    try {
+      const {
+        userId,
+      } = req;
+
+      const [user] = await userCommonAction
+        .list({
+          where: {
+            id: userId,
+          },
+        });
+
+      return Helpers.successResponse(res, 200, { profile: user });
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
+  editProfile: async (req, res) => {
+    try {
+      const {
+        name,
+        bioDesc,
+      } = req.body;
+
+      const {
+        userId,
+      } = req;
+
+      const [user] = await userCommonAction
+        .update({
+          id: userId,
+        }, {
+          name,
+          bioDesc,
+        });
+
+      return Helpers.successResponse(res, 200, 'Successfully update user profile');
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
 };
