@@ -19,6 +19,7 @@
         "no-plusplus": "off",
         "import/no-dynamic-require": "off",
         "no-throw-literal": "off",
-        "no-await-in-loop": "off"
+        "no-await-in-loop": "off",
+        "no-tabs": "off"
     }
 }
