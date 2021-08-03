@@ -1,6 +1,7 @@
 /* global Helpers */
 
 const jobCommonAction = require('../actions/common')('Job');
+const jobAppCommonAction = require('../actions/common')('JobApplication');
 const { getNearbyJob, search } = require('../actions/job');
 
 module.exports = {
@@ -22,7 +23,7 @@ module.exports = {
         userId,
       } = req;
 
-      const point = { type: 'Point', coordinates: [longitude, latitude] };
+      const point = { type: 'Point', coordinates: [Number(longitude), Number(latitude)] };
 
       await jobCommonAction.create({
         jobPosterId: userId,
@@ -33,7 +34,7 @@ module.exports = {
         genderPreference,
         agePreference,
         desc,
-        price,
+        price: Number(price),
       });
 
       return Helpers.successResponse(res, 201, { message: 'Job is successfully registered' });
@@ -82,6 +83,116 @@ module.exports = {
       });
 
       return Helpers.successResponse(res, 200, { records });
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
+  applyJob: async (req, res) => {
+    try {
+      const {
+        jobId,
+      } = req.params;
+
+      const {
+        userId,
+      } = req;
+
+      const job = await jobCommonAction.update({ id: jobId }, { status: 'ACTIVE' });
+
+      if (!job) throw ({ message: 'Job is not found', status: 401 });
+
+      await jobAppCommonAction.create({
+        employeeId: userId,
+        jobId,
+        status: 'APPLIED',
+      });
+
+      return Helpers.successResponse(res, 200, 'Successfully applied for job');
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
+  approveApplicant: async (req, res) => {
+    try {
+      const {
+        jobId,
+      } = req.params;
+
+      const {
+        jobApplicationId,
+      } = req.body;
+
+      const {
+        userId,
+      } = req;
+
+      const job = await jobCommonAction.findOne({ id: jobId, jobPosterId: userId, status: 'APPLIED' });
+
+      if (!job) throw ({ message: 'Job is not found', status: 401 });
+
+      job.status = 'TAKEN';
+
+      await job.save();
+
+      await jobAppCommonAction.update({ id: jobApplicationId }, { status: 'APPROVED' });
+
+      return Helpers.successResponse(res, 200, 'Successfully approve applicant');
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
+  rejectApplicant: async (req, res) => {
+    try {
+      const {
+        jobId,
+      } = req.params;
+
+      const {
+        jobApplicationId,
+      } = req.body;
+
+      const {
+        userId,
+      } = req;
+
+      const job = await jobCommonAction.findOne({ id: jobId, jobPosterId: userId, status: 'APPLIED' });
+
+      if (!job) throw ({ message: 'Job is not found', status: 401 });
+
+      job.status = 'ACTIVE';
+
+      await job.save();
+
+      await jobAppCommonAction.update({ id: jobApplicationId }, { status: 'REJECTED' });
+
+      return Helpers.successResponse(res, 200, 'Successfully reject applicant');
+    } catch (err) {
+      return Helpers.errorResponse(res, null, err);
+    }
+  },
+  contactApplicant: async (req, res) => {
+    try {
+      const {
+        jobId,
+      } = req.body;
+
+      const {
+        userId,
+      } = req;
+
+      const { jobApplication } = await jobCommonAction.findOne({ id: jobId, jobPosterId: userId }, { association: 'jobApplication', include: [{ association: 'employee' }] });
+
+      if (jobApplication && !jobApplication.employee) {
+        throw ({ status: 400, message: 'Applicant not found' });
+      }
+
+      const applicantPhoneNumber = '+6281282498252';
+
+      const defaultText = 'Halo kamu yang melamar anak saya ya? Kerja?';
+
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${applicantPhoneNumber.substring(1)}&text=${encodeURI(defaultText)}`;
+
+      return Helpers.successResponse(res, 200, { whatsappUrl });
     } catch (err) {
       return Helpers.errorResponse(res, null, err);
     }

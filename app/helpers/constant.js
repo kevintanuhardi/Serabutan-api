@@ -21,6 +21,9 @@ module.exports = {
     ],
     POST: [
       '/job',
+      '/job/:jobId/apply',
+      '/job/:jobId/approve-application',
+      '/job/:jobId/reject-application',
     ],
     PUT: [
       '/user/profile',
